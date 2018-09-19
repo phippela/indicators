@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-class USDIndicatorTest {
+class YuanIndicatorTest {
 
 	public static final String USDA = "9,504 billion dollars";
 	public static final String USDB = "13.45 billion U.S. dollars";
