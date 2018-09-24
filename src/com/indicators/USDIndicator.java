@@ -24,6 +24,16 @@ public class USDIndicator implements Indicator {
 	private Set<String> billionPostNames = new HashSet<String>();
 	private Set<String> trillionPostNames = new HashSet<String>();
 	
+	
+	// These cases are for forward matches
+			/*
+			public static final String USDF = "$66.1 billion";
+			public static final String USDD = "US$100 billion";
+			public static final String USDI = "$3.5-$4.5 billion";
+			public static final String USDJ = "$7-$12 billion";
+			*/
+	private Set<String> preMatches = new HashSet<String>();
+	
 	private List<String> okCharacters = new ArrayList<String>();
 	
 	public USDIndicator(String classNameIN,String tagIN) {
@@ -41,6 +51,10 @@ public class USDIndicator implements Indicator {
 		trillionPostNames.add(" trillion dollars");
 		trillionPostNames.add(" trillion u.s. dollars");
 		trillionPostNames.add(" trillion us dollars");
+		
+		preMatches.add("US$");
+		preMatches.add("$");
+		
 		
 		// These are characters that we allow as 'numbers', so these are digits
 		// plus . and , comma being silent.
@@ -81,15 +95,8 @@ public class USDIndicator implements Indicator {
 		findPostMatches(lowerText, offset,this.TRILLION, trillionPostNames,matches);
 		
 		// AND THEN the same for PRE matches
-
-
-		// These cases are for forward matches
-		/*
-		public static final String USDF = "$66.1 billion";
-		public static final String USDD = "US$100 billion";
-		public static final String USDI = "$3.5-$4.5 billion";
-		public static final String USDJ = "$7-$12 billion";
-		*/
+		
+		
 		
 		return matches;
 	}
@@ -134,20 +141,33 @@ public class USDIndicator implements Indicator {
 			return;
 		
 		String valueString = text.substring(matchIndex-numbersInFront, matchIndex);
+		
 		String fullString = valueString+postString;
+		
+		// checking for "US " in front
+		int usCorrection = 0;
+		if((matchIndex-numbersInFront-3) >= 0)
+			if("us ".equals(text.substring(matchIndex-numbersInFront-3, matchIndex-numbersInFront))) {
+					fullString="us "+fullString;
+					usCorrection = -3;
+				}	
+				
 		// TODO DEBUG
-		System.out.println("valueString="+valueString);
 		System.out.println("fullString="+fullString);
+		System.out.println("valueString="+valueString);
 		// This is for making sure that 1,000 is seen as 1000
 		String valueWithoutCommas = valueString.replaceAll(",",""); 
+		System.out.println("valueWithoutCommas="+valueWithoutCommas);
+		System.out.println("");
 		
 		Annotation annotation = new Annotation();
 		annotation.className = this.className+postString; // We assume that we can just post append
 		annotation.value = valueWithoutCommas;
-		annotation.start = offset + (matchIndex-numbersInFront);
+		annotation.start = offset + usCorrection + (matchIndex-numbersInFront);
 		annotation.stop = offset + (matchIndex+postString.length());
 		annotation.tags.add(matchType);
 		annotation.tags.add(MONEY);
+		annotation.fullString = fullString;
 		matches.add(annotation);
 		
 		/*

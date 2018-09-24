@@ -10,6 +10,8 @@ public class Annotation {
 	public int stop = -1;
 	public String className = "";
 	public String value;
+	public String fullString ="";
+	
 	// Optional for having identities that are recognized by this annotation
 	// For example this could be USD or MILLION
 	public Set<String> tags = new HashSet<String>();
