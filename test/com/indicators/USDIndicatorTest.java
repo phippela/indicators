@@ -45,6 +45,7 @@ class USDIndicatorTest {
 	public static final String USDI_trillion = "$3.5-$4.5 trillion";
 	public static final String USDJ_trillion = "$7-$12 trillion";
 
+	/*
 	@Test
 	void testStart() {
 
@@ -249,7 +250,7 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 	}
-	
+	*/
 	@Test
 	void testUSDA() {
 
@@ -310,7 +311,6 @@ class USDIndicatorTest {
 	void testUSDD() {
 
 		// public static final String USDD = "US$100 billion";
-
 		int offset = 0;
 		int lenghtOfValue = USDD.length();
 		Indicator indicator = new USDIndicator(USDD, "money");
@@ -455,7 +455,7 @@ class USDIndicatorTest {
 				
 	}
 
-
+	/*
 	@Test
 	void testMillion() {
 
@@ -661,7 +661,7 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("trillion"));
 	}
 	
-	
+	*/
 	/*
 
 88.14 billion yuan
