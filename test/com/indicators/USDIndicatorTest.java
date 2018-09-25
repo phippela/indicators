@@ -45,7 +45,7 @@ class USDIndicatorTest {
 	public static final String USDI_trillion = "$3.5-$4.5 trillion";
 	public static final String USDJ_trillion = "$7-$12 trillion";
 
-	/*
+
 	@Test
 	void testStart() {
 
@@ -112,9 +112,29 @@ class USDIndicatorTest {
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
-		
+			
 		lenghtOfValue = USDG.length();
 		annotations = indicator.identify(USDG+END_OF_SENTENCE, offset);
+		assertTrue(annotations.size()==1);
+		annotation = annotations.iterator().next(); 
+		assertTrue("1.9".equals(annotation.value));
+		assertTrue(annotation.start == (0+offset));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("billion"));
+		
+		lenghtOfValue = USDH.length();
+		annotations = indicator.identify(USDH+END_OF_SENTENCE, offset);
+		assertTrue(annotations.size()==1);
+		annotation = annotations.iterator().next(); 
+		assertTrue("25.5".equals(annotation.value));
+		assertTrue(annotation.start == (0+offset));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("billion"));
+		
+		lenghtOfValue = USDI.length();
+		annotations = indicator.identify(USDI+END_OF_SENTENCE, offset);
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
@@ -130,8 +150,8 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 		
-		lenghtOfValue = USDH.length();
-		annotations = indicator.identify(USDH+END_OF_SENTENCE, offset);
+		lenghtOfValue = USDJ.length();
+		annotations = indicator.identify(USDJ+END_OF_SENTENCE, offset);
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
@@ -148,7 +168,7 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("billion"));
 	}
 	
-	
+	/*
 	@Test
 	void testEnd() {
 
@@ -250,7 +270,6 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 	}
-	*/
 	
 	@Test
 	void testUSDA() {
@@ -455,7 +474,7 @@ class USDIndicatorTest {
 				
 	}
 
-	/*
+
 	@Test
 	void testMillion() {
 
@@ -661,7 +680,7 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("trillion"));
 	}
 	
-	*/
+
 	/*
 
 88.14 billion yuan

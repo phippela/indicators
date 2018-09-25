@@ -346,7 +346,7 @@ public class USDIndicator implements Indicator {
 		}
 
 		Annotation annotation = new Annotation();
-		annotation.className = this.className+postString; // We assume that we can just post append
+		annotation.className = this.className+matchType; // We assume that we can just post append
 		annotation.value = valueWithoutCommas;
 		annotation.start = offset + usCorrection + (matchIndex-numbersInFront);
 		annotation.stop = offset + (matchIndex+postString.length());
