@@ -251,6 +251,7 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("billion"));
 	}
 	*/
+	
 	@Test
 	void testUSDA() {
 
@@ -343,7 +344,7 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("billion"));
 
 	}
-
+	
 	@Test
 	void testUSDF() {
 
@@ -361,7 +362,6 @@ class USDIndicatorTest {
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 
-		fail("Not yet implemented");
 	}
 
 
@@ -435,9 +435,9 @@ class USDIndicatorTest {
 		//public static final String USDJ = "$7-$12 billion";
 
 		int offset = 10;
-		int lenghtOfValue = USDI.length();
+		int lenghtOfValue = USDJ.length();
 		Indicator indicator = new USDIndicator(USDI, "money");
-		Collection<Annotation> annotations = indicator.identify(NORMAL_SENTENCE+" "+START_OF_SENTENCE+USDI+END_OF_SENTENCE, offset);
+		Collection<Annotation> annotations = indicator.identify(NORMAL_SENTENCE+" "+START_OF_SENTENCE+USDJ+END_OF_SENTENCE, offset);
 		assertTrue(annotations.size()==2);
 		Annotation annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
