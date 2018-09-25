@@ -81,15 +81,23 @@ public class USDIndicator implements Indicator {
 		// in order not to mess with the white spaces, we should not trim the actual string
 		String lowerText = text.toLowerCase();
 
+		if(DEBUG)
+			System.out.println("before million");
 		// millions
 		findPostMatches(lowerText, offset, this.MILLION, millionPostNames,matches);
 
+		if(DEBUG)
+			System.out.println("before billion");
 		// billions
 		findPostMatches(lowerText, offset,this.BILLION, billionPostNames,matches);
 
+		if(DEBUG)
+			System.out.println("before trillion");
 		// trillions
 		findPostMatches(lowerText, offset,this.TRILLION, trillionPostNames,matches);
 
+		if(DEBUG)
+			System.out.println("before find pre matches");
 		// AND THEN the same for PRE matches
 		findPreMatches(lowerText,offset,preMatches, matches);
 
@@ -109,7 +117,10 @@ public class USDIndicator implements Indicator {
 
 			// as long we find possible matches...
 			int matchIndex = text.indexOf(postString,currentIndex);
-			while(matchIndex > 0 ) {
+			if(DEBUG)
+				System.out.println("text="+text+" matchIndex="+matchIndex + " postString="+postString + " currentIndex="+currentIndex);
+	
+			while(matchIndex >= 0 ) {
 				if(DEBUG)
 					System.out.println("preString="+postString + " currentIndex="+currentIndex);
 				// We have a possible match

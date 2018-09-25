@@ -138,14 +138,15 @@ class USDIndicatorTest {
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		System.out.println("annotation.start="+annotation.start);
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+5+offset)));// || (annotation.start == 0+offset+3));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 		// we want two
 		annotation = annotations.iterator().next(); 
 		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		assertTrue(annotation.start == (0+offset)|| (annotation.start == (0+5+offset)));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
@@ -155,20 +156,22 @@ class USDIndicatorTest {
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		assertTrue((annotation.start == (0+offset+3))||(annotation.start == (0+offset) ));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 		// we want two
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+	
+		System.out.println("annotation.start="+annotation.value+" annotation.fullText="+annotation.fullString);
+		assertTrue((annotation.start == (0+offset+3))||(annotation.start == (0+offset) ));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 	}
 	
-	/*
+
 	@Test
 	void testEnd() {
 
@@ -238,16 +241,9 @@ class USDIndicatorTest {
 		
 		lenghtOfValue = USDG.length();
 		annotations = indicator.identify((START_OF_SENTENCE+" ")+USDG+".", offset);
-		assertTrue(annotations.size()==2);
+		assertTrue(annotations.size()==1);
 		annotation = annotations.iterator().next(); 
-		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == ((START_OF_SENTENCE+" ").length()+offset));
-		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
-		assertTrue(annotation.tags.contains("money"));
-		assertTrue(annotation.tags.contains("billion"));
-		// we want two
-		annotation = annotations.iterator().next(); 
-		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue("1.9".equals(annotation.value));
 		assertTrue(annotation.start == ((START_OF_SENTENCE+" ").length()+offset));
 		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
@@ -255,17 +251,49 @@ class USDIndicatorTest {
 		
 		lenghtOfValue = USDH.length();
 		annotations = indicator.identify((START_OF_SENTENCE+" ")+USDH+".", offset);
+		assertTrue(annotations.size()==1);
+		annotation = annotations.iterator().next(); 
+		assertTrue("25.5".equals(annotation.value));
+		assertTrue(annotation.start == ((START_OF_SENTENCE+" ").length()+offset));
+		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("billion"));
+		
+		lenghtOfValue = USDI.length();
+		annotations = indicator.identify((START_OF_SENTENCE+" ")+USDI+".", offset);
+		assertTrue(annotations.size()==2);
+		annotation = annotations.iterator().next(); 
+		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue( (annotation.start == ((START_OF_SENTENCE+" ").length()+offset)) || 
+				(annotation.start == ((START_OF_SENTENCE+" ").length()+offset)+5));
+		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("billion"));
+		// we want two
+		annotation = annotations.iterator().next(); 
+		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue((annotation.start == ((START_OF_SENTENCE+" ").length()+offset))  || 
+				(annotation.start == ((START_OF_SENTENCE+" ").length()+offset+5)) );
+		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("billion"));
+		
+		lenghtOfValue = USDJ.length();
+		annotations = indicator.identify((START_OF_SENTENCE+" ")+USDJ+".", offset);
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == ((START_OF_SENTENCE+" ").length()+offset));
+		assertTrue((annotation.start == ((START_OF_SENTENCE+" ").length()+offset)) ||
+				(annotation.start == ((START_OF_SENTENCE+" ").length()+offset+3)));
 		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 		// we want two
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == ((START_OF_SENTENCE+" ").length()+offset));
+		assertTrue((annotation.start == ((START_OF_SENTENCE+" ").length()+offset)) ||
+				(annotation.start == ((START_OF_SENTENCE+" ").length()+offset+3)));
+		//assertTrue(annotation.start == ((START_OF_SENTENCE+" ").length()+offset));
 		assertTrue(annotation.stop == (START_OF_SENTENCE+" ").length()+lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
@@ -434,14 +462,18 @@ class USDIndicatorTest {
 		assertTrue(annotations.size()==2);
 		Annotation annotation = annotations.iterator().next(); 
 		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset));
+		assertTrue((annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset)) ||
+				(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset+5)));
 		assertTrue(annotation.stop == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+lenghtOfValue+offset)); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 		// we want to have both values, but we are not too picky
 		annotation = annotations.iterator().next(); 
 		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset));
+		assertTrue((annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset)) ||
+				(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset+5)));
+		
+	//	assertTrue(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset));
 		assertTrue(annotation.stop == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+lenghtOfValue+offset)); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
@@ -460,14 +492,17 @@ class USDIndicatorTest {
 		assertTrue(annotations.size()==2);
 		Annotation annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset));
+		assertTrue((annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset)) || 
+				(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset+3)));
 		assertTrue(annotation.stop == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+lenghtOfValue+offset)); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
 		// we want to have both values, but we are not too picky
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset));
+		assertTrue((annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset)) || 
+				(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset+3)));
+	//	assertTrue(annotation.start == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+offset));
 		assertTrue(annotation.stop == (NORMAL_SENTENCE.length()+1+START_OF_SENTENCE.length()+lenghtOfValue+offset)); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("billion"));
@@ -544,16 +579,9 @@ class USDIndicatorTest {
 		
 		lenghtOfValue = USDG_million.length();
 		annotations = indicator.identify(USDG_million+END_OF_SENTENCE, offset);
-		assertTrue(annotations.size()==2);
+		assertTrue(annotations.size()==1);
 		annotation = annotations.iterator().next(); 
-		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
-		assertTrue(annotation.stop == lenghtOfValue); 
-		assertTrue(annotation.tags.contains("money"));
-		assertTrue(annotation.tags.contains("million"));
-		// we want two
-		annotation = annotations.iterator().next(); 
-		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue("1.9".equals(annotation.value));
 		assertTrue(annotation.start == (0+offset));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
@@ -561,17 +589,44 @@ class USDIndicatorTest {
 		
 		lenghtOfValue = USDH_million.length();
 		annotations = indicator.identify(USDH_million+END_OF_SENTENCE, offset);
+		assertTrue(annotations.size()==1);
+		annotation = annotations.iterator().next(); 
+		assertTrue("25.5".equals(annotation.value));
+		assertTrue(annotation.start == (0+offset));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("million"));
+		
+		lenghtOfValue = USDI_million.length();
+		annotations = indicator.identify(USDI_million+END_OF_SENTENCE, offset);
+		assertTrue(annotations.size()==2);
+		annotation = annotations.iterator().next(); 
+		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+5)));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("million"));
+		// we want two
+		annotation = annotations.iterator().next(); 
+		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+5)));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("million"));
+		
+		lenghtOfValue = USDJ_million.length();
+		annotations = indicator.identify(USDJ_million+END_OF_SENTENCE, offset);
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+3)));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("million"));
 		// we want two
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+3)));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("million"));
@@ -647,16 +702,9 @@ class USDIndicatorTest {
 		
 		lenghtOfValue = USDG_trillion.length();
 		annotations = indicator.identify(USDG_trillion+END_OF_SENTENCE, offset);
-		assertTrue(annotations.size()==2);
+		assertTrue(annotations.size()==1);
 		annotation = annotations.iterator().next(); 
-		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
-		assertTrue(annotation.stop == lenghtOfValue); 
-		assertTrue(annotation.tags.contains("money"));
-		assertTrue(annotation.tags.contains("trillion"));
-		// we want two
-		annotation = annotations.iterator().next(); 
-		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue("1.9".equals(annotation.value));
 		assertTrue(annotation.start == (0+offset));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
@@ -664,17 +712,44 @@ class USDIndicatorTest {
 		
 		lenghtOfValue = USDH_trillion.length();
 		annotations = indicator.identify(USDH_trillion+END_OF_SENTENCE, offset);
+		assertTrue(annotations.size()==1);
+		annotation = annotations.iterator().next(); 
+		assertTrue("25.5".equals(annotation.value));
+		assertTrue(annotation.start == (0+offset));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("trillion"));
+		
+		lenghtOfValue = USDI_trillion.length();
+		annotations = indicator.identify(USDI_trillion+END_OF_SENTENCE, offset);
+		assertTrue(annotations.size()==2);
+		annotation = annotations.iterator().next(); 
+		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+5)));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("trillion"));
+		// we want two
+		annotation = annotations.iterator().next(); 
+		assertTrue("3.5".equals(annotation.value)||("4.5".equals(annotation.value)));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+5)));
+		assertTrue(annotation.stop == lenghtOfValue); 
+		assertTrue(annotation.tags.contains("money"));
+		assertTrue(annotation.tags.contains("trillion"));
+		
+		lenghtOfValue = USDJ_trillion.length();
+		annotations = indicator.identify(USDJ_trillion+END_OF_SENTENCE, offset);
 		assertTrue(annotations.size()==2);
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+3)));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("trillion"));
 		// we want two
 		annotation = annotations.iterator().next(); 
 		assertTrue("7".equals(annotation.value)||("12".equals(annotation.value)));
-		assertTrue(annotation.start == (0+offset));
+		assertTrue((annotation.start == (0+offset)) || (annotation.start == (0+offset+3)));
 		assertTrue(annotation.stop == lenghtOfValue); 
 		assertTrue(annotation.tags.contains("money"));
 		assertTrue(annotation.tags.contains("trillion"));
