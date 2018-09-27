@@ -45,6 +45,9 @@ period 2017-2024
 		this.className = classNameIN;
 		this.tag = tagIN;
 
+		yearWords.add("2007");
+		yearWords.add("2008");
+		yearWords.add("2009");
 		yearWords.add("2010");
 		yearWords.add("2011");
 		yearWords.add("2012");
@@ -172,7 +175,7 @@ period 2017-2024
 		annotation.className = this.className+matchType; // We assume that we can just post append
 		annotation.value = valueWithoutCommas;
 		annotation.start = offset + (matchIndex) - quarterHit.length();
-		annotation.stop = offset + (matchIndex+fullString.length());
+		annotation.stop = offset + (matchIndex + 4);
 		annotation.tags.add(tag);
 		annotation.fullString = fullString;
 		matches.add(annotation);
