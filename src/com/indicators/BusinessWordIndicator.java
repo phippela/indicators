@@ -27,15 +27,27 @@ public class BusinessWordIndicator implements Indicator {
 		this.className = classNameIN;
 		this.tag = tagIN;
 
+		businessWords.add("outward investment");
+		businessWords.add("deal");
+		businessWords.add("portfolio investment");
+		businessWords.add("take equity stake");
+		businessWords.add("acquire");
+		businessWords.add("purchase");
+		businessWords.add("take over");
+		businessWords.add("trade");
+		businessWords.add("m&a");
+		businessWords.add("acquisition");
+		businessWords.add("purchase stake");
+		businessWords.add("outward investment");
+		businessWords.add("fdi");
+		businessWords.add("foreign direct investment");
+		businessWords.add("buy stakes in");
+		businessWords.add("buy stake in");
+		businessWords.add("equity stake");
 		businessWords.add("buy assets");
 		businessWords.add("invest in");
-		businessWords.add("take over");
 		businessWords.add("joint venture");
-		businessWords.add("deal");
-		businessWords.add("purchase");
-		businessWords.add("aqcuire");
 		businessWords.add("transaction");
-		businessWords.add("buy stakes in");
 		businessWords.add("merger");
 		businessWords.add("stock purchase");
 		
