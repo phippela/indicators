@@ -34,7 +34,6 @@ public class BusinessWordIndicator implements Indicator {
 		businessWords.add("acquire");
 		businessWords.add("purchase");
 		businessWords.add("take over");
-		businessWords.add("trade");
 		businessWords.add("m&a");
 		businessWords.add("acquisition");
 		businessWords.add("purchase stake");
