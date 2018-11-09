@@ -7,10 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+/*
+ * USD 5.3 million 
+ */
 public class RMBIndicator implements Indicator {
 
 	// PUT this true to enable sytem out debugs...
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 	public static final String MILLION = "million";
 	public static final String BILLION = "billion";
@@ -34,23 +37,13 @@ public class RMBIndicator implements Indicator {
 		this.className = classNameIN;
 		this.tag = tagIN;
 
-		millionPostNames.add(" million yuan");
-//		millionPostNames.add(" million u.s. dollars");
-//		millionPostNames.add(" million us dollars");
+		millionPostNames.add(" million rmb");
+		billionPostNames.add(" billion rmb");
+		trillionPostNames.add(" trillion rmb");
 
-		billionPostNames.add(" billion yuan");
-//		billionPostNames.add(" billion u.s. dollars");
-//		billionPostNames.add(" billion us dollars");
-
-		trillionPostNames.add(" trillion yuan");
-//		trillionPostNames.add(" trillion u.s. dollars");
-//		trillionPostNames.add(" trillion us dollars");
-
-		//preMatches.add("$");
-		preMatches.add("RMB");
-		preMatches.add("RM");
-
-
+		preMatches.add("rmb");
+		preMatches.add("rmb ");
+		
 		// These are characters that we allow as 'numbers', so these are digits
 		// plus . and , comma being silent.
 
@@ -80,15 +73,23 @@ public class RMBIndicator implements Indicator {
 		// in order not to mess with the white spaces, we should not trim the actual string
 		String lowerText = text.toLowerCase();
 
+		if(DEBUG)
+			System.out.println("before million rmb");
 		// millions
 		findPostMatches(lowerText, offset, this.MILLION, millionPostNames,matches);
 
+		if(DEBUG)
+			System.out.println("before billion rmb");
 		// billions
 		findPostMatches(lowerText, offset,this.BILLION, billionPostNames,matches);
 
+		if(DEBUG)
+			System.out.println("before trillion rmb");
 		// trillions
 		findPostMatches(lowerText, offset,this.TRILLION, trillionPostNames,matches);
 
+		if(DEBUG)
+			System.out.println("before find pre matches");
 		// AND THEN the same for PRE matches
 		findPreMatches(lowerText,offset,preMatches, matches);
 
@@ -101,16 +102,19 @@ public class RMBIndicator implements Indicator {
 		int currentIndex = 0;
 		Iterator<String> iterator = postNames.iterator();
 
-		// here we loop through all possible post matches as of now its RMB & RM 
+		// here we loop through all possible post matches as of now its $ sign 
 		while(iterator.hasNext()) {
 			String postString = iterator.next();
 			currentIndex = 0;
 
 			// as long we find possible matches...
 			int matchIndex = text.indexOf(postString,currentIndex);
-			while(matchIndex > 0 ) {
+			if(DEBUG)
+				System.out.println("text="+text+" matchIndex="+matchIndex + " postString="+postString + " currentIndex="+currentIndex);
+	
+			while(matchIndex >= 0 ) {
 				if(DEBUG)
-					System.out.println("preString="+postString + " currentIndex="+currentIndex);
+					System.out.println("preString=("+postString + ") currentIndex="+currentIndex);
 				// We have a possible match
 				isPreMatch(text, offset, matchIndex,postString, matches);
 
@@ -146,9 +150,9 @@ public class RMBIndicator implements Indicator {
 		String matchType = ""; // This is determined after the number value like $5 billion... 
 	
 		if(DEBUG)
-			System.out.println("We are at isPostMatch:"+text+" offset:"+offset+ " matchIndex="+matchIndex+ " preString="+preString+
-					" matches.size()="+matches.size());
-		int numbersAfter = findNumbersAfter(text,matchIndex);
+			System.out.println("We are at isPreMatch:"+text+" offset:"+offset+ " matchIndex="+matchIndex+ " preString=("+preString+
+					") matches.size()="+matches.size());
+		int numbersAfter = findNumbersAfter(text,matchIndex+preString.length()-1);
 		
 		if(DEBUG)
 			System.out.println("numbers in after="+numbersAfter);
@@ -162,20 +166,36 @@ public class RMBIndicator implements Indicator {
 			System.out.println("valueString="+valueString);
 		// We want to have the ' '+million or ' '+ billion or ' ' + trillion
 		boolean hit = false;
+		boolean nopadding = false;
 		int startIndex = matchIndex+preString.length()+numbersAfter;
-		if(matches(text,startIndex," "+MILLION)) {
+		if((matches(text,startIndex," "+MILLION))) {
 			matchType = MILLION;
 			hit = true;
+		}
+		if((matches(text,startIndex,""+MILLION))) {
+			matchType = MILLION;
+			hit = true;
+			nopadding = true;
 		}
 			
 		if(!hit && matches(text,startIndex," "+BILLION)) {
 			matchType = BILLION;
 			hit = true;
 		}
+		if(!hit && matches(text,startIndex,""+BILLION)) {
+			matchType = BILLION;
+			hit = true;
+			nopadding = true;
+		}
 	
 		if(!hit && matches(text,startIndex," "+TRILLION))  {
 			matchType = TRILLION;
 			hit = true;
+		}
+		if(!hit && matches(text,startIndex,""+TRILLION))  {
+			matchType = TRILLION;
+			hit = true;
+			nopadding = true;
 		}
 		// If no hit we are done.
 		if(!hit)
@@ -183,24 +203,20 @@ public class RMBIndicator implements Indicator {
 
 		
 		String fullString = preString+valueString+ ' '+matchType;
+		if(nopadding)
+			 fullString = preString+valueString+matchType;
 		if(DEBUG)
 			System.out.println("fullString="+fullString);
 		
-		// In here we do not want to make duplicate matches... like we should check 
-		// that there is not ' million dollars' ' billion dollars' or ' trillion dollars' after.
-		// It is bit hackish....
 		hit = false;
-		startIndex = matchIndex + fullString.length();
-		if(matches(text, startIndex, " yuan"))
-			return;
 		
 		// checking for "US " in front
 		int usCorrection = 0;
-		if((matchIndex-2) >= 0)
-			if("us".equals(text.substring(matchIndex-2, matchIndex))) {
-				fullString="us"+fullString;
-				usCorrection = -2;
-			}	
+		//if((matchIndex-2) >= 0)
+		//	if("us".equals(text.substring(matchIndex-2, matchIndex))) {
+		//		fullString="us"+fullString;
+		//		usCorrection = -2;
+		//	}	
 
 		String valueWithoutCommas = valueString.replaceAll(",",""); 
 
@@ -228,6 +244,7 @@ public class RMBIndicator implements Indicator {
 		}
 			
 		// Now lets check for an extra annotation
+		/*
 		if((annotation.start-1-offset) > 0) {
 			// We want to have '-' character
 			if("-".equals(text.substring(annotation.start-1-offset, annotation.start-offset))) {
@@ -264,18 +281,10 @@ public class RMBIndicator implements Indicator {
 					
 					
 				}
-					
-					
+						
 			}
 			
-		}
-		
-		/*
-		public static final String USDF = "$66.1 billion";
-		public static final String USDD = "US$100 billion";
-		public static final String USDI = "$3.5-$4.5 billion"; // TODO WE CAN ADD THE FRONT LATER
-		public static final String USDJ = "$7-$12 billion"; // TODO WE CAN ADD THE FRONT LATER
-		 */
+		} */
 
 	}
 
@@ -326,11 +335,11 @@ public class RMBIndicator implements Indicator {
 
 		// checking for "US " in front
 		int usCorrection = 0;
-		if((matchIndex-numbersInFront-3) >= 0)
-			if("us ".equals(text.substring(matchIndex-numbersInFront-3, matchIndex-numbersInFront))) {
-				fullString="us "+fullString;
-				usCorrection = -3;
-			}	
+		//if((matchIndex-numbersInFront-3) >= 0)
+		//	if("us ".equals(text.substring(matchIndex-numbersInFront-3, matchIndex-numbersInFront))) {
+		//		fullString="us "+fullString;
+		//		usCorrection = -3;
+		//	}	
 
 		String valueWithoutCommas = valueString.replaceAll(",",""); 
 
@@ -353,15 +362,6 @@ public class RMBIndicator implements Indicator {
 		annotation.tags.add(MONEY);
 		annotation.fullString = fullString;
 		matches.add(annotation);
-
-		/*
-		public static final String USDA = "9,504 billion dollars"; // Note this is 9540 billion in contrast to 9.504 trillion
-		public static final String USDB = "13.45 billion U.S. dollars";
-		public static final String USDC = "200 billion U.S. dollars";
-		public static final String USDE = "3 billion dollars";
-		public static final String USDH = "25.5 Billion US Dollars";
-		public static final String USDG = "US 1.9 billion dollars"; // note this we are not checking... the US TODO...
-		 */
 
 	}
 

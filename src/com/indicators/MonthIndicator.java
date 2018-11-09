@@ -15,7 +15,7 @@ import java.util.Set;
 public class MonthIndicator implements Indicator {
 
 	// PUT this true to enable system out debugs...
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 	public static final String MONTH = "month";
 

@@ -13,7 +13,7 @@ import java.util.Set;
 public class USDIndicator implements Indicator {
 
 	// PUT this true to enable sytem out debugs...
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 	public static final String MILLION = "million";
 	public static final String BILLION = "billion";
